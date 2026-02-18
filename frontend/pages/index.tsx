@@ -40,40 +40,48 @@ const testimonials = [
 
 export default function Home() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const scrollInterval = useRef<NodeJS.Timeout | undefined>(undefined);
+  const animationFrameRef = useRef<number | undefined>(undefined);
+  const isPausedRef = useRef(false);
 
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
     if (!scrollContainer) return;
 
-    const scrollStep = 1;
-    let scrollAmount = 0;
-    const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+    const scrollSpeed = 2; // pixels per frame
+    let lastTimestamp = 0;
 
-    const autoScroll = () => {
-      if (scrollAmount >= maxScroll) {
-        // Reset to start for infinite scroll effect
-        scrollAmount = 0;
-        scrollContainer.scrollTo({ left: 0, behavior: 'auto' });
-      } else {
-        scrollAmount += scrollStep;
-        scrollContainer.scrollLeft = scrollAmount;
+    const autoScroll = (timestamp: number) => {
+      if (!isPausedRef.current && scrollContainer) {
+        const deltaTime = timestamp - lastTimestamp;
+        
+        if (deltaTime > 16) { // ~60fps
+          const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+          const currentScroll = scrollContainer.scrollLeft;
+
+          if (currentScroll >= maxScroll) {
+            scrollContainer.scrollLeft = 0;
+          } else {
+            scrollContainer.scrollLeft += scrollSpeed;
+          }
+          
+          lastTimestamp = timestamp;
+        }
       }
+      
+      animationFrameRef.current = requestAnimationFrame(autoScroll);
     };
 
-    scrollInterval.current = setInterval(autoScroll, 30);
+    animationFrameRef.current = requestAnimationFrame(autoScroll);
 
     // Pause on hover
-    const handleMouseEnter = () => clearInterval(scrollInterval.current);
-    const handleMouseLeave = () => {
-      scrollInterval.current = setInterval(autoScroll, 30);
-    };
+    const handleMouseEnter = () => { isPausedRef.current = true; };
+    const handleMouseLeave = () => { isPausedRef.current = false; };
 
     scrollContainer.addEventListener('mouseenter', handleMouseEnter);
     scrollContainer.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
-      if (scrollInterval.current) clearInterval(scrollInterval.current);
+      if (animationFrameRef.current) cancelAnimationFrame(animationFrameRef.current);
       scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
       scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
     };
