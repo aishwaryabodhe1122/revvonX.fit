@@ -38,10 +38,67 @@ export default function Layout({ children, title }: { children: React.ReactNode,
       </div>
     </div></nav>
     <main>{children}</main>
-    <footer className="footer py-4 mt-5"><div className="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
-      <div className="d-flex align-items-center gap-2"><img src="/assets/logo.svg" alt="logo" width={20} height={20} /><span className="text-secondary">© {new Date().getFullYear()} Revon.Fit</span></div>
-      <div className="d-flex gap-3"><a href="#" className="text-secondary">Privacy</a><a href="#" className="text-secondary">Terms</a></div>
-      <div className='text-secondary'>Proudly Created By <span className='service-company gradient-text' style={{ color: '#f0c14b', fontWeight: 'bold', fontStyle: 'italic', fontSize: '1.2rem' }}>Valtora Tech</span></div>
-    </div></footer>
+    <footer className="footer py-5 mt-5" style={{borderTop: '1px solid var(--border)'}}>
+      <div className="container">
+        <div className="row g-4">
+          {/* Brand Section */}
+          <div className="col-lg-4">
+            <div className="d-flex align-items-center gap-2 mb-3">
+              <img src="/assets/logo.svg" alt="logo" width={32} height={32} />
+              <span className="fw-bold fs-5">Revon.Fit</span>
+            </div>
+            <p className="text-secondary mb-3">Transform your body and mind with personalized fitness training and nutrition coaching.</p>
+            <div className="text-secondary">© {new Date().getFullYear()} Revon.Fit. All rights reserved.</div>
+          </div>
+
+          {/* Quick Links */}
+          <div className="col-lg-2 col-md-4">
+            <h6 className="fw-bold mb-3" style={{color: 'var(--accent)'}}>Quick Links</h6>
+            <ul className="list-unstyled">
+              <li className="mb-2"><Link href="/" className="text-secondary">Home</Link></li>
+              <li className="mb-2"><Link href="/services" className="text-secondary">Services</Link></li>
+              <li className="mb-2"><Link href="/blogs" className="text-secondary">Blogs</Link></li>
+              <li className="mb-2"><Link href="/reviews" className="text-secondary">Reviews</Link></li>
+              <li className="mb-2"><Link href="/contact" className="text-secondary">Contact</Link></li>
+            </ul>
+          </div>
+
+          {/* Services */}
+          <div className="col-lg-3 col-md-4">
+            <h6 className="fw-bold mb-3" style={{color: 'var(--accent)'}}>Our Services</h6>
+            <ul className="list-unstyled">
+              <li className="mb-2"><span className="text-secondary">Personal Training</span></li>
+              <li className="mb-2"><span className="text-secondary">Online Coaching</span></li>
+              <li className="mb-2"><span className="text-secondary">Nutrition Planning</span></li>
+              <li className="mb-2"><span className="text-secondary">Transformation Programs</span></li>
+            </ul>
+          </div>
+
+          {/* Contact Info */}
+          <div className="col-lg-3 col-md-4">
+            <h6 className="fw-bold mb-3" style={{color: 'var(--accent)'}}>Get In Touch</h6>
+            <ul className="list-unstyled">
+              <li className="mb-2 text-secondary">📧 coach@Revon.Fit.co</li>
+              <li className="mb-2 text-secondary">📞 +91 88308 89788</li>
+              <li className="mb-2 text-secondary">📍 Pune, India</li>
+              <li className="mb-2 text-secondary">🌐 Online Worldwide</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom Bar */}
+        <div className="row mt-4 pt-4" style={{borderTop: '1px solid var(--border)'}}>
+          <div className="col-md-6 text-center text-md-start mb-3 mb-md-0">
+            <div className="d-flex gap-3 justify-content-center justify-content-md-start">
+              <a href="#" className="text-secondary">Privacy Policy</a>
+              <a href="#" className="text-secondary">Terms of Service</a>
+            </div>
+          </div>
+          <div className="col-md-6 text-center text-md-end">
+            <span className='text-secondary'>Proudly Created By <span className='service-company gradient-text' style={{ fontWeight: 'bold', fontStyle: 'italic', fontSize: '1.1rem' }}>Valtora Tech</span></span>
+          </div>
+        </div>
+      </div>
+    </footer>
   </>);
 }
