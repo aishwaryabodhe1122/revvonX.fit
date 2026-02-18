@@ -5,7 +5,7 @@ type Service={id:string; title:string; price:string; tags:string[]; summary:stri
 export default function ServicesPage(){
   const [services, setServices] = useState<Service[]>([]); const [viewMode, setViewMode] = useState<'card'|'list'>('card');
   useEffect(()=>{ fetch(`${API_BASE}/api/services`).then(r=>r.json()).then(setServices).catch(()=>setServices([])); },[]);
-  return (<Layout title="Services"><section className="section"><div className="container">
+  return (<Layout title="Services"><div className="page-gradient"><section className="section"><div className="container">
     <div className="d-flex justify-content-between align-items-start mb-4">
       <div>
         <h1 className="fw-bold mb-3">Services & Packages</h1>
@@ -21,5 +21,5 @@ export default function ServicesPage(){
     ) : (
       <div className="d-flex flex-column gap-3">{services.map(s=>(<ServiceCard service={s} viewMode="list" key={s.id}/>))}</div>
     )}
-  </div></section></Layout>);
+  </div></section></div></Layout>);
 }

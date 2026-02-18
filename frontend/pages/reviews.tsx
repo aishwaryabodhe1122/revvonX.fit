@@ -208,6 +208,7 @@ export default function ReviewsPage() {
 
   return (
     <Layout title="Reviews">
+      <div className="page-gradient">
       <section className="section">
         <div className="container">
           <div className="text-center mb-5">
@@ -353,6 +354,7 @@ export default function ReviewsPage() {
           </div>
         </div>
       </section>
+      </div>
 
       {/* Media Popup Modal */}
       {selectedMediaUrl && (

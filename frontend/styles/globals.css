@@ -13,4 +13,5 @@ a { color: var(--text); text-decoration: none; } a:hover { color: var(--accent);
 .form-control, .form-select { background:#0e1319!important; border:1px solid var(--border)!important; color:var(--text)!important; border-radius:12px!important; }
 .form-control:focus, .form-select:focus { border-color:var(--accent)!important; box-shadow:0 0 0 .2rem rgba(212,175,55,.15)!important; }
 .section { padding:72px 0; } .hero { background: linear-gradient(160deg, rgba(212,175,55,0.12), transparent 40%); border-bottom:1px solid var(--border); }
+.page-gradient { background: radial-gradient(ellipse at top, rgba(212,175,55,0.15) 0%, transparent 50%), radial-gradient(ellipse at bottom right, rgba(212,175,55,0.08) 0%, transparent 50%), #0c0f13; min-height: 100vh; }
 @media (max-width:576px){ .display-3{ font-size:2.2rem; } }

@@ -4,7 +4,7 @@ import { AiOutlineUser, AiOutlineMail, AiOutlinePhone, AiOutlineWhatsApp, AiOutl
 export default function ContactPage() {
   const [form, setForm] = useState({ name: '', email: '', phone: '', whatsapp: '', query: '', agree: false }); const [sent, setSent] = useState<'idle' | 'ok' | 'error'>('idle');
   const submit = async (e: React.FormEvent) => { e.preventDefault(); setSent('idle'); try { const r = await fetch(`${API_BASE}/api/contact`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(form) }); setSent(r.ok ? 'ok' : 'error'); if (r.ok) setForm({ name: '', email: '', phone: '', whatsapp: '', query: '', agree: false }); } catch { setSent('error'); } };
-  return (<Layout title="Contact"><section className="section"><div className="container"><div className="row g-4">
+  return (<Layout title="Contact"><div className="page-gradient"><section className="section"><div className="container"><div className="row g-4">
     <div className="contactHeader">
       <h1 className="fw-bold mb-2 d-flex justify-content-center">Get in Touch</h1><p className="text-secondary d-flex justify-content-center">Tell me about your goals — strength, fat loss, endurance, or overall wellness. I will respond within 24 hours.</p>
     </div>
@@ -31,5 +31,5 @@ export default function ContactPage() {
       </ul></div>
     </div>
 
-  </div></div></section></Layout>);
+  </div></div></section></div></Layout>);
 }
