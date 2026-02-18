@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import React from 'react';
 import Layout from '../components/Layout';
 import { BsCamera, BsPlayCircle } from 'react-icons/bs';
+import { AiFillHeart } from 'react-icons/ai';
 import { addReview, getApprovedReviews, Review } from '../utils/reviewsStorage';
 
 export default function ReviewsPage() {
@@ -313,13 +314,18 @@ export default function ReviewsPage() {
                       const hasHalfStar = review.rating % 1 !== 0;
                       
                       return (
-                        <div key={review.id} className="p-3" style={{background: '#0f141b', border: '1px solid var(--border)', borderRadius: '12px'}}>
+                        <div key={review.id} className="p-3" style={{background: '#0f141b', border: '1px solid var(--border)', borderRadius: '12px', position: 'relative'}}>
+                          {review.liked && (
+                            <div className="position-absolute" style={{top: '10px', right: '10px'}}>
+                              <AiFillHeart size={20} style={{color: 'var(--accent)'}} title="Liked by Admin" />
+                            </div>
+                          )}
                           <div className="d-flex justify-content-between align-items-start mb-2">
                             <div>
                               <h6 className="mb-0">{review.name}</h6>
                               <small className="text-secondary">{timeAgo}</small>
                             </div>
-                            <div style={{color: 'var(--accent)'}}>
+                            <div style={{color: 'var(--accent)', marginRight: review.liked ? '30px' : '0'}}>
                               {'★'.repeat(fullStars)}{hasHalfStar ? '⯨' : ''}{'☆'.repeat(5 - Math.ceil(review.rating))}
                             </div>
                           </div>

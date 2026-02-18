@@ -1,7 +1,13 @@
 
-import { useState } from 'react'; import Link from 'next/link'; import { API_BASE } from '../../components/config'; import { setToken } from '../../components/auth';
+import { useState, useEffect } from 'react'; import Link from 'next/link'; import { API_BASE } from '../../components/config'; import { setToken, getToken } from '../../components/auth';
 export default function AdminLogin(){
   const [identifier, setIdentifier] = useState(''); const [otpSent, setOtpSent] = useState(false); const [otp, setOtp] = useState(''); const [msg, setMsg] = useState<{type:'info'|'danger'|'success', text:string} | null>(null); const [loading, setLoading] = useState(false);
+  
+  useEffect(() => {
+    if (getToken()) {
+      window.location.href = '/admin/contacts';
+    }
+  }, []);
   const requestOtp = async (e:React.FormEvent)=>{ e.preventDefault(); setLoading(true); setMsg(null); try{ const r=await fetch(`${API_BASE}/api/auth/request-otp`,{method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({identifier})}); if(r.ok){ setOtpSent(true); setMsg({type:'info', text:'OTP sent. Please check your email.'}); } else { const t=await r.json().catch(()=>({detail:'Unauthorized Credentials!'})); setMsg({type:'danger', text: t.detail || 'Unauthorized Credentials!'}); } } finally { setLoading(false); } };
   const verifyOtp = async (e:React.FormEvent)=>{ e.preventDefault(); setLoading(true); setMsg(null); try{ const r=await fetch(`${API_BASE}/api/auth/verify-otp`,{method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({identifier, otp})}); if(r.ok){ const data=await r.json(); setToken(data.token); setMsg({type:'success', text:'Login successful. Redirecting...'}); setTimeout(()=>{ window.location.href='/admin/contacts'; }, 500); } else { const t=await r.json().catch(()=>({detail:'Invalid or expired OTP'})); setMsg({type:'danger', text: t.detail || 'Invalid or expired OTP'}); } } finally { setLoading(false); } };
   return (<div className="container section" style={{maxWidth:560}}><div className="card-luxe p-4"><h1 className="fw-bold mb-3">Admin Login</h1>

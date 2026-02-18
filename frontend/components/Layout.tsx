@@ -1,6 +1,14 @@
-import Head from 'next/head'; import Link from 'next/link';
+import Head from 'next/head'; import Link from 'next/link'; import { useEffect, useState } from 'react'; import { getToken } from './auth';
 
 export default function Layout({ children, title }: { children: React.ReactNode, title?: string }) {
+  const [adminLink, setAdminLink] = useState('/admin/login');
+  
+  useEffect(() => {
+    if (getToken()) {
+      setAdminLink('/admin/contacts');
+    }
+  }, []);
+  
   return (<>
     <style>{`
         .gradient-text {
@@ -33,7 +41,7 @@ export default function Layout({ children, title }: { children: React.ReactNode,
           <li className="nav-item"><Link className="nav-link" href="/contact">Contact</Link></li>
         </ul>
         <ul className="navbar-nav ms-2">
-          <li className="nav-item"><Link className="btn btn-outline-light" href="/admin/login">Admin</Link></li>
+          <li className="nav-item"><Link className="btn btn-outline-light" href={adminLink}>Admin</Link></li>
         </ul>
       </div>
     </div></nav>

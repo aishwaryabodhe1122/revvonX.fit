@@ -1,5 +1,7 @@
 
 import Link from 'next/link';
+import { logout } from './auth';
+
 export default function AdminLayout({ children, title }: { children: React.ReactNode, title?: string }) {
   return (<div>
     <nav className="navbar navbar-expand-lg sticky-top"><div className="container">
@@ -9,7 +11,9 @@ export default function AdminLayout({ children, title }: { children: React.React
           <li className="nav-item"><Link className="nav-link" href="/admin/contacts">Contacts</Link></li>
           <li className="nav-item"><Link className="nav-link" href="/admin/blogs">Blogs</Link></li>
           <li className="nav-item"><Link className="nav-link" href="/admin/packages">Packages</Link></li>
+          <li className="nav-item"><Link className="nav-link" href="/admin/reviews">Reviews</Link></li>
           <li className="nav-item"><Link className="nav-link" href="/">Back to Site</Link></li>
+          <li className="nav-item"><button className="btn btn-outline-danger btn-sm" onClick={logout}>Logout</button></li>
         </ul>
       </div>
     </div></nav>

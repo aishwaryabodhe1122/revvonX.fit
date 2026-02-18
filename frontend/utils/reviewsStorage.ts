@@ -10,6 +10,7 @@ export interface Review {
   mediaTypes: string[]; // 'image' or 'video'
   timestamp: string;
   approved: boolean;
+  liked: boolean; // Admin liked status
 }
 
 const STORAGE_KEY = 'revon_reviews';
@@ -26,12 +27,13 @@ export const getReviews = (): Review[] => {
   }
 };
 
-export const addReview = (review: Omit<Review, 'id' | 'timestamp' | 'approved'>): Review => {
+export const addReview = (review: Omit<Review, 'id' | 'timestamp' | 'approved' | 'liked'>): Review => {
   const newReview: Review = {
     ...review,
     id: Date.now().toString(),
     timestamp: new Date().toISOString(),
-    approved: true // Auto-approve for now
+    approved: true, // Auto-approve for now
+    liked: false // Not liked by default
   };
 
   const reviews = getReviews();
@@ -61,4 +63,39 @@ export const addReview = (review: Omit<Review, 'id' | 'timestamp' | 'approved'>)
 
 export const getApprovedReviews = (): Review[] => {
   return getReviews().filter(review => review.approved);
+};
+
+export const deleteReview = (id: string): boolean => {
+  try {
+    const reviews = getReviews();
+    const filteredReviews = reviews.filter(review => review.id !== id);
+    
+    if (filteredReviews.length === reviews.length) {
+      return false; // Review not found
+    }
+    
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredReviews));
+    return true;
+  } catch (error) {
+    console.error('Error deleting review:', error);
+    return false;
+  }
+};
+
+export const toggleLikeReview = (id: string): boolean => {
+  try {
+    const reviews = getReviews();
+    const review = reviews.find(r => r.id === id);
+    
+    if (!review) {
+      return false; // Review not found
+    }
+    
+    review.liked = !review.liked;
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
+    return true;
+  } catch (error) {
+    console.error('Error toggling like on review:', error);
+    return false;
+  }
 };
