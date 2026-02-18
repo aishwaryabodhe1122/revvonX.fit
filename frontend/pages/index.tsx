@@ -81,19 +81,17 @@ export default function Home() {
 
   return (
     <Layout title="Home">
-      <section className="hero section">
-        <div className="container">
-          <div className="row align-items-center g-4">
-            <div className="col-lg-6">
+      <section className="hero section" style={{position: 'relative', overflow: 'hidden', minHeight: '400px'}}>
+        <video autoPlay loop muted playsInline style={{position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0}}>
+          <source src="/assets/main.mp4" type="video/mp4" />
+        </video>
+        <div style={{position: 'relative', zIndex: 1, background: 'rgba(12, 15, 19, 0.7)', height: '100%'}}>
+          <div className="container">
+            <div className="d-flex flex-column align-items-center justify-content-center text-center" style={{minHeight: '400px', padding: '40px 0'}}>
               <span className="badge-gold mb-3">Premium Coaching</span>
               <h1 className="display-3 fw-bold mb-3">Transform Your Body & Mind with <span style={{color:'var(--accent)'}}>Revon.Fit</span></h1>
-              <p className="lead text-secondary mb-4">Personal training and nutrition coaching tailored to your goals — online or in-person. Science-based plans, elite accountability.</p>
+              <p className="lead text-secondary mb-4" style={{maxWidth: '700px'}}>Personal training and nutrition coaching tailored to your goals — online or in-person. Science-based plans, elite accountability.</p>
               <div className="d-flex gap-3"><Link href="/services" className="btn btn-gold btn-lg">Explore Services</Link><a href="#about" className="btn btn-outline-light btn-lg">About Me</a></div>
-            </div>
-            <div className="col-lg-6">
-              <div className="card-luxe shadow-soft p-0 overflow-hidden">
-                <img src="/assets/gym-bg.jpg" className="img-fluid" alt="hero"/>
-              </div>
             </div>
           </div>
         </div>
@@ -102,7 +100,7 @@ export default function Home() {
         <div className="container">
           <div className="row g-4 align-items-center">
             <div className="col-md-5">
-              <div className="card-luxe overflow-hidden">
+              <div className="overflow-hidden">
                 <img src="/assets/trainer.png" className="img-fluid" alt="Trainer"/>
               </div>
             </div>
