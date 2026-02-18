@@ -117,7 +117,7 @@ export default function Home() {
       <section className="py-5 bg-light">
         <div className="container">
           <div className="text-center mb-5">
-            <h2 className="fw-bold">What Our <span style={{color: 'var(--accent)'}}>Clients Say</span></h2>
+            <h2 className="fw-bold"><span style={{color: '#1a1a1a'}}>What Our</span> <span style={{color: 'var(--accent)'}}>Clients Say</span></h2>
             <p className="text-secondary">Don't just take our word for it. Here's what our clients have to say about their experience.</p>
           </div>
           {testimonials.length === 0 ? (
