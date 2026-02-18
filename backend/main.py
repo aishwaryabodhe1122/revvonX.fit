@@ -1,29 +1,15 @@
-from fastapi import FastAPI, Body, HTTPException, Header, Depends, Request, status
+
+from fastapi import FastAPI, Body, HTTPException, Header, Depends, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 from typing import Optional, Dict, Any
 import jwt
 from settings import ADMIN_EMAIL, JWT_SECRET
 from email_util import send_email
 from auth import issue_otp, verify_otp_and_issue_token, is_authorized_identifier, normalize_identifier
-from store import contacts_create, contacts_list, contacts_delete, blogs_create, blogs_list, services_list, services_create, services_update, services_delete, create_subscription, subscriptions_list, subscription_delete
+from store import contacts_create, contacts_list, contacts_delete, blogs_create, blogs_list, services_list, services_create, services_update, services_delete
 
-app = FastAPI(title="Revvon.Fit API", version="2.0.0")
-
-# Enhanced CORS configuration
-origins = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-    expose_headers=["*"]
-)
+app = FastAPI(title="Revon.Fit API", version="2.0.0")
+app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
 def require_bearer(token: Optional[str] = Header(default=None, alias="Authorization")):
     if not token or not token.startswith("Bearer "): raise HTTPException(status_code=401, detail="Missing token")
@@ -97,53 +83,3 @@ def admin_service_update(id_: str, payload: Dict[str,Any] = Body(...), user=Depe
 def admin_service_delete(id_: str, user=Depends(require_bearer)):
     if not services_delete(id_): raise HTTPException(status_code=404, detail="Not found")
     return {"status":"deleted"}
-
-@app.get("/api/admin/subscriptions")
-def admin_subscriptions_list(user=Depends(require_bearer)):
-    return subscriptions_list()
-
-@app.delete("/api/admin/subscriptions/{id_}")
-def admin_subscription_delete(id_: int, user=Depends(require_bearer)):
-    if not subscription_delete(id_):
-        raise HTTPException(status_code=404, detail="Subscription not found")
-    return {"status": "deleted"}
-
-@app.post("/api/subscribe")
-async def subscribe(payload: Dict[str, str] = Body(...)):
-    try:
-        email = payload.get("email")
-        if not email or "@" not in email:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Valid email is required"
-            )
-        
-        result = create_subscription(email)
-        
-        # Send confirmation email
-        try:
-            send_email(
-                email,
-                "Subscription Confirmed - Revvon.Fit",
-                f"Thank you for subscribing to Revvon.Fit!\n\n"
-                f"We'll keep you updated with our latest news and offers.\n\n"
-                f"If this wasn't you, please ignore this email."
-            )
-        except Exception as e:
-            print(f"Failed to send subscription email: {e}")
-            # Don't fail the request if email sending fails
-        
-        return result
-        
-    except Exception as e:
-        print(f"Error in subscribe endpoint: {str(e)}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An error occurred while processing your subscription"
-        )
-
-@app.post("/api/auth/logout")
-def logout():
-    # In a production environment, you might want to add the token to a blacklist
-    # For now, we'll just return success and let the frontend handle token removal
-    return {"status": "success", "message": "Successfully logged out"}

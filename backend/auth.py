@@ -27,7 +27,7 @@ def issue_otp(identifier: str) -> None:
         OTP_STORE[normalized] = {"otp": otp, "exp": exp}
         print(f"[DEBUG] OTP stored in memory. Current OTP store: {list(OTP_STORE.keys())}")
         
-        email_subject = f"Your Revvon.Fit Admin OTP"
+        email_subject = f"Your Revon.Fit Admin OTP"
         email_body = f"OTP for {identifier}: {otp}\nThis code expires in {OTP_EXPIRE_MINUTES} minutes."
         
         print(f"[DEBUG] Sending email to {ADMIN_EMAIL}...")

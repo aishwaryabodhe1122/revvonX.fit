@@ -1,3 +1,4 @@
+
 import os
 from datetime import datetime
 from typing import Optional, List
@@ -23,12 +24,6 @@ class BlogPost(SQLModel, table=True):
     content: str
     tags_csv: str = ""   # comma-separated for simplicity
     published_date: datetime = Field(default_factory=datetime.utcnow)
-
-class Subscription(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
-    email: str = Field(unique=True, index=True)
-    created_at: datetime = Field(default_factory=datetime.utcnow)
-    is_active: bool = Field(default=True)
 
 def init_db():
     SQLModel.metadata.create_all(engine)

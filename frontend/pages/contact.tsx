@@ -16,7 +16,7 @@ export default function ContactPage(){
       </div></form>{sent==='ok'&&<div className="alert alert-success mt-3">Thanks! Your message has been sent.</div>}{sent==='error'&&<div className="alert alert-danger mt-3">Something went wrong. Please try again.</div>}</div></div>
     <div className="col-lg-6"><h2 className="fw-bold mb-3">Contact Information</h2><div className="card-luxe p-4"><ul className="list-unstyled mb-0">
       <li className="mb-2"><strong>Name:</strong> Mr. Sushil Chaudhari (Trainer & Nutritionist)</li>
-      <li className="mb-2"><strong>Email:</strong> coach@Revvon.Fit.co</li>
+      <li className="mb-2"><strong>Email:</strong> coach@Revon.Fit.co</li>
       <li className="mb-2"><strong>Phone:</strong> +91 88308 89788</li>
       <li className="mb-2"><strong>WhatsApp:</strong> +91 88308 89788</li>
       <li className="mb-2"><strong>Location:</strong> Pune • Online worldwide</li>
