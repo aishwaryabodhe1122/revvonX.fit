@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Layout from '../components/Layout';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
+import { getApprovedReviews, Review } from '../utils/reviewsStorage';
 
 // Import TestimonialCard with SSR disabled to prevent window is not defined error
 const TestimonialCard = dynamic(
@@ -9,39 +10,16 @@ const TestimonialCard = dynamic(
   { ssr: false }
 );
 
-// Sample testimonials data
-const testimonials = [
-  {
-    name: 'Rahul Sharma',
-    review: 'Sushil transformed my fitness journey completely. His personalized training and diet plan helped me lose 12kg in 3 months!',
-    rating: 5
-  },
-  {
-    name: 'Priya Patel',
-    review: 'The best trainer I\'ve ever worked with. His knowledge about nutrition is exceptional and the workouts are always challenging.',
-    rating: 5
-  },
-  {
-    name: 'Amit Singh',
-    review: 'I was skeptical at first, but the results speak for themselves. Gained 5kg of muscle in just 4 months!',
-    rating: 4
-  },
-  {
-    name: 'Neha Gupta',
-    review: 'Sushil is very professional and attentive. He adapts the training based on my progress and limitations.',
-    rating: 5
-  },
-  {
-    name: 'Vikram Mehta',
-    review: 'The online coaching is just as effective as in-person. The app makes it super easy to track progress and stay accountable.',
-    rating: 4
-  }
-];
 
 export default function Home() {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const animationFrameRef = useRef<number | undefined>(undefined);
   const isPausedRef = useRef(false);
+  const [testimonials, setTestimonials] = useState<Review[]>([]);
+
+  useEffect(() => {
+    setTestimonials(getApprovedReviews());
+  }, []);
 
   useEffect(() => {
     const scrollContainer = scrollContainerRef.current;
@@ -142,28 +120,34 @@ export default function Home() {
             <h2 className="fw-bold">What Our <span style={{color: 'var(--accent)'}}>Clients Say</span></h2>
             <p className="text-secondary">Don't just take our word for it. Here's what our clients have to say about their experience.</p>
           </div>
-          <div 
-            ref={scrollContainerRef}
-            className="d-flex gap-4 py-4 overflow-hidden scroll-container"
-            style={{
-              scrollBehavior: 'smooth',
-              WebkitOverflowScrolling: 'touch',
-              msOverflowStyle: 'none',
-              scrollbarWidth: 'none',
-            }}
-          >
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="flex-shrink-0" style={{ width: '320px' }}>
-                <TestimonialCard {...testimonial} />
-              </div>
-            ))}
-            {/* Duplicate items for infinite scroll effect */}
-            {testimonials.map((testimonial, index) => (
-              <div key={`duplicate-${index}`} className="flex-shrink-0" style={{ width: '320px' }}>
-                <TestimonialCard {...testimonial} />
-              </div>
-            ))}
-          </div>
+          {testimonials.length === 0 ? (
+            <div className="text-center py-5">
+              <p className="text-secondary">No reviews yet. <Link href="/reviews" style={{color: 'var(--accent)'}}>Be the first to share your experience!</Link></p>
+            </div>
+          ) : (
+            <div 
+              ref={scrollContainerRef}
+              className="d-flex gap-4 py-4 overflow-hidden scroll-container"
+              style={{
+                scrollBehavior: 'smooth',
+                WebkitOverflowScrolling: 'touch',
+                msOverflowStyle: 'none',
+                scrollbarWidth: 'none',
+              }}
+            >
+              {testimonials.map((testimonial) => (
+                <div key={testimonial.id} className="flex-shrink-0" style={{ width: '320px' }}>
+                  <TestimonialCard name={testimonial.name} review={testimonial.review} rating={testimonial.rating} />
+                </div>
+              ))}
+              {/* Duplicate items for infinite scroll effect only if we have 3+ reviews */}
+              {testimonials.length >= 3 && testimonials.map((testimonial) => (
+                <div key={`duplicate-${testimonial.id}`} className="flex-shrink-0" style={{ width: '320px' }}>
+                  <TestimonialCard name={testimonial.name} review={testimonial.review} rating={testimonial.rating} />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
       <style jsx global>{`

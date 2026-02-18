@@ -29,6 +29,7 @@ export default function Layout({ children, title }: { children: React.ReactNode,
         <ul className="navbar-nav ms-auto mb-2 mb-lg-0 gap-lg-3">
           <li className="nav-item"><Link className="nav-link" href="/services">Services</Link></li>
           <li className="nav-item"><Link className="nav-link" href="/blogs">Blogs</Link></li>
+          <li className="nav-item"><Link className="nav-link" href="/reviews">Reviews</Link></li>
           <li className="nav-item"><Link className="nav-link" href="/contact">Contact</Link></li>
         </ul>
         <ul className="navbar-nav ms-2">
