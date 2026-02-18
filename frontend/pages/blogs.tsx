@@ -1,9 +1,9 @@
 
-import { useEffect, useState } from 'react'; import Layout from '../components/Layout'; import BlogCard from '../components/BlogCard'; import { API_BASE } from '../components/config';
+import { useEffect, useState } from 'react'; import Layout from '../components/Layout'; import BlogCard from '../components/BlogCard'; import BlogModal from '../components/BlogModal'; import { API_BASE } from '../components/config';
 import { BsFillGridFill, BsListUl } from 'react-icons/bs';
-type Blog={id:string; title:string; excerpt:string; content:string; tags:string[]; published_date:string;};
+type Blog={id:string; title:string; excerpt:string; content:string; tags:string[]; media?:string[]; published_date:string;};
 export default function BlogsPage(){
-  const [posts, setPosts] = useState<Blog[]>([]); const [email, setEmail] = useState(''); const [status, setStatus] = useState<'idle'|'ok'|'error'>('idle'); const [viewMode, setViewMode] = useState<'card'|'list'>('card');
+  const [posts, setPosts] = useState<Blog[]>([]); const [email, setEmail] = useState(''); const [status, setStatus] = useState<'idle'|'ok'|'error'>('idle'); const [viewMode, setViewMode] = useState<'card'|'list'>('card'); const [viewingBlog, setViewingBlog] = useState<Blog | null>(null);
   useEffect(()=>{ fetch(`${API_BASE}/api/blogs`).then(r=>r.json()).then(setPosts).catch(()=>setPosts([])); },[]);
   const subscribe = async (e:React.FormEvent)=>{ e.preventDefault(); setStatus('idle'); try{ const r=await fetch(`${API_BASE}/api/subscribe`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email})}); setStatus(r.ok?'ok':'error'); }catch{ setStatus('error'); } };
   return (<Layout title="Blogs"><div className="page-gradient"><section className="section"><div className="container">
@@ -19,9 +19,9 @@ export default function BlogsPage(){
     {status==='ok' && <div className="alert alert-success">Subscribed! You will receive new blog updates.</div>}
     {status==='error' && <div className="alert alert-danger">Something went wrong. Please try again.</div>}
     {viewMode==='card' ? (
-      <div className="row g-4">{posts.map(p=>(<div className="col-md-6" key={p.id}><BlogCard post={p} viewMode="card"/></div>))}</div>
+      <div className="row g-4">{posts.map(p=>(<div className="col-md-6" key={p.id}><BlogCard post={p} viewMode="card" onView={()=>setViewingBlog(p)}/></div>))}</div>
     ) : (
-      <div className="d-flex flex-column gap-3">{posts.map(p=>(<BlogCard post={p} viewMode="list" key={p.id}/>))}</div>
+      <div className="d-flex flex-column gap-3">{posts.map(p=>(<BlogCard post={p} viewMode="list" key={p.id} onView={()=>setViewingBlog(p)}/>))}</div>
     )}
-  </div></section></div></Layout>);
+  </div></section></div>{viewingBlog && <BlogModal blog={viewingBlog} onClose={()=>setViewingBlog(null)} isAdmin={false} />}</Layout>);
 }

@@ -1,9 +1,9 @@
 
-import { useEffect, useState } from 'react'; import Layout from '../components/Layout'; import ServiceCard from '../components/ServiceCard'; import { API_BASE } from '../components/config';
+import { useEffect, useState } from 'react'; import Layout from '../components/Layout'; import ServiceCard from '../components/ServiceCard'; import ServiceModal from '../components/ServiceModal'; import { API_BASE } from '../components/config';
 import { BsFillGridFill, BsListUl } from 'react-icons/bs';
-type Service={id:string; title:string; price:string; tags:string[]; summary:string; details:string;};
+type Service={id:string; title:string; price:string; tags:string[]; media?:string[]; summary:string; details:string;};
 export default function ServicesPage(){
-  const [services, setServices] = useState<Service[]>([]); const [viewMode, setViewMode] = useState<'card'|'list'>('card');
+  const [services, setServices] = useState<Service[]>([]); const [viewMode, setViewMode] = useState<'card'|'list'>('card'); const [viewingService, setViewingService] = useState<Service | null>(null);
   useEffect(()=>{ fetch(`${API_BASE}/api/services`).then(r=>r.json()).then(setServices).catch(()=>setServices([])); },[]);
   return (<Layout title="Services"><div className="page-gradient"><section className="section"><div className="container">
     <div className="d-flex justify-content-between align-items-start mb-4">
@@ -17,9 +17,9 @@ export default function ServicesPage(){
       </div>
     </div>
     {viewMode==='card' ? (
-      <div className="row g-4">{services.map(s=>(<div className="col-md-6 col-lg-4" key={s.id}><ServiceCard service={s} viewMode="card"/></div>))}</div>
+      <div className="row g-4">{services.map(s=>(<div className="col-md-6 col-lg-4" key={s.id}><ServiceCard service={s} viewMode="card" onView={()=>setViewingService(s)}/></div>))}</div>
     ) : (
-      <div className="d-flex flex-column gap-3">{services.map(s=>(<ServiceCard service={s} viewMode="list" key={s.id}/>))}</div>
+      <div className="d-flex flex-column gap-3">{services.map(s=>(<ServiceCard service={s} viewMode="list" key={s.id} onView={()=>setViewingService(s)}/>))}</div>
     )}
-  </div></section></div></Layout>);
+  </div></section></div>{viewingService && <ServiceModal service={viewingService} onClose={()=>setViewingService(null)} isAdmin={false} />}</Layout>);
 }
