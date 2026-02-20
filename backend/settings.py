@@ -1,5 +1,9 @@
 
 import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 ADMIN_EMAIL = os.getenv("ADMIN_EMAIL", "aishubodhe7007@gmail.com")
 ADMIN_PHONE = os.getenv("ADMIN_PHONE", "+918317206235")
 ADMIN_NAME = os.getenv("ADMIN_NAME", "Admin")

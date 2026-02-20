@@ -77,6 +77,21 @@ if USE_MONGO:
     def comments_delete(id_: str) -> bool:
         return _coll("comments").delete_one({"_id": ObjectId(id_)}).deleted_count > 0
 
+    # SUBSCRIBERS
+    def subscribers_create(data: Dict[str, Any]) -> str:
+        res = _coll("subscribers").insert_one({**data, "created_at": datetime.utcnow()})
+        return str(res.inserted_id)
+
+    def subscribers_list() -> List[Dict[str, Any]]:
+        items = list(_coll("subscribers").find().sort("created_at", -1))
+        for x in items:
+            x["id"] = str(x.pop("_id"))
+            x["created_at"] = x["created_at"].isoformat()
+        return items
+
+    def subscribers_delete(id_: str) -> bool:
+        return _coll("subscribers").delete_one({"_id": ObjectId(id_)}).deleted_count > 0
+
 else:
     # SQLModel (SQLite/Postgres)
     from sqlmodel import SQLModel, Field, create_engine, Session, select
@@ -119,6 +134,11 @@ else:
         comment_text: str
         parent_id: Optional[str] = None  # for replies
         is_admin: bool = False
+        created_at: datetime = Field(default_factory=datetime.utcnow)
+
+    class Subscriber(SQLModel, table=True):
+        id: Optional[int] = Field(default=None, primary_key=True)
+        email: str
         created_at: datetime = Field(default_factory=datetime.utcnow)
 
     def init_sql():
@@ -298,6 +318,33 @@ else:
     def comments_delete(id_: str) -> bool:
         with Session(engine) as s:
             obj = s.get(Comment, int(id_))
+            if not obj:
+                return False
+            s.delete(obj)
+            s.commit()
+            return True
+
+    # SUBSCRIBERS
+    def subscribers_create(data: Dict[str, Any]) -> str:
+        with Session(engine) as s:
+            sub = Subscriber(email=data["email"])
+            s.add(sub)
+            s.commit()
+            s.refresh(sub)
+            return str(sub.id)
+
+    def subscribers_list() -> List[Dict[str, Any]]:
+        with Session(engine) as s:
+            items = s.exec(select(Subscriber).order_by(Subscriber.created_at.desc())).all()
+            return [{
+                "id": str(s.id),
+                "email": s.email,
+                "created_at": s.created_at.isoformat()
+            } for s in items]
+
+    def subscribers_delete(id_: str) -> bool:
+        with Session(engine) as s:
+            obj = s.get(Subscriber, int(id_))
             if not obj:
                 return False
             s.delete(obj)

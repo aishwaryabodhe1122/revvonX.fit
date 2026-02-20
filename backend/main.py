@@ -10,7 +10,7 @@ from pathlib import Path
 from settings import ADMIN_EMAIL, JWT_SECRET
 from email_util import send_email
 from auth import issue_otp, verify_otp_and_issue_token, is_authorized_identifier, normalize_identifier
-from store import contacts_create, contacts_list, contacts_delete, blogs_create, blogs_list, blogs_update, blogs_delete, services_list, services_create, services_update, services_delete, comments_create, comments_list, comments_delete
+from store import contacts_create, contacts_list, contacts_delete, blogs_create, blogs_list, blogs_update, blogs_delete, services_list, services_create, services_update, services_delete, comments_create, comments_list, comments_delete, subscribers_create, subscribers_list, subscribers_delete
 from fastapi.staticfiles import StaticFiles
 
 app = FastAPI(title="Revon.Fit API", version="2.0.0")
@@ -51,8 +51,138 @@ def auth_verify_otp(payload: Dict[str,str] = Body(...)):
 @app.post("/api/contact")
 def create_contact(payload: Dict[str,Any] = Body(...)):
     if not payload.get("agree"): raise HTTPException(status_code=400, detail="Consent required")
-    data = { "name":payload.get("name",""), "email":payload.get("email",""), "phone":payload.get("phone",""), "whatsapp":payload.get("whatsapp"), "query":payload.get("query","") }
-    _id = contacts_create(data); return {"status":"ok", "id":_id}
+    
+    name = payload.get("name", "").strip()
+    email = payload.get("email", "").strip()
+    phone = payload.get("phone", "").strip()
+    whatsapp = payload.get("whatsapp", "").strip()
+    query = payload.get("query", "").strip()
+    
+    data = { "name":name, "email":email, "phone":phone, "whatsapp":whatsapp, "query":query }
+    _id = contacts_create(data)
+    
+    # Send confirmation email to user
+    if email:
+        subject = "We've Received Your Query! 📧"
+        body = f"""
+Dear {name or 'Friend'},
+
+Thank you for reaching out to RevvonX.Fit! 🎉
+
+We've successfully received your query and our team is excited to help you on your fitness journey.
+
+Your Query Details:
+📝 Message: {query}
+📞 Phone: {phone or 'Not provided'}
+💬 WhatsApp: {whatsapp or 'Not provided'}
+
+What happens next:
+✅ Our team will review your query within 24 hours
+✅ You'll receive a personalized response via email or phone
+✅ We'll provide tailored recommendations based on your goals
+✅ If needed, we'll schedule a free consultation call
+
+Ready to transform your fitness journey? Here's what we offer:
+• Personal Training (Online & Offline in Pune)
+• Customized Workout Plans
+• Nutrition Coaching & Diet Plans
+• Transformation Programs
+• 24/7 Support & Guidance
+
+Connect with us directly:
+📧 Email: coach@RevvonX.Fit.co
+📞 Phone: +91 88308 89788
+📱 WhatsApp: +91 88308 89788
+📍 Location: Pune, India | Online Worldwide
+
+Your fitness transformation starts here! We're committed to helping you achieve your health and wellness goals.
+
+Best regards,
+Sushil Chaudhari
+Founder & Head Coach
+RevvonX.Fit
+
+---
+P.S. Check out our latest blog posts for free fitness tips and nutrition advice!
+"""
+        
+        try:
+            email_sent = send_email(email, subject, body)
+            print(f"[DEBUG] Contact confirmation email sent to {email}: {email_sent}")
+        except Exception as e:
+            print(f"[ERROR] Failed to send contact confirmation email to {email}: {str(e)}")
+    
+    return {"status":"ok", "id":_id, "message": "Query submitted successfully! We'll contact you soon."}
+
+@app.post("/api/subscribe")
+def subscribe_newsletter(payload: Dict[str,str] = Body(...)):
+    email = payload.get("email", "").strip()
+    if not email: raise HTTPException(status_code=400, detail="Email required")
+    
+    # Save subscriber to database
+    try:
+        subscribers_create({"email": email})
+    except Exception as e:
+        print(f"[ERROR] Failed to save subscriber {email}: {str(e)}")
+        # Continue with email sending even if database save fails
+    
+    # Send subscription confirmation email
+    subject = "Welcome to RevvonX.Fit Newsletter! 🎉"
+    body = f"""
+Dear Subscriber,
+
+Thank you for subscribing to the RevvonX.Fit newsletter! 🎉
+
+You're now part of our fitness community where you'll receive:
+- 📝 Latest fitness articles and workout tips
+- 🥗 Nutrition advice and healthy recipes  
+- 💪 Motivation and success stories
+- 🎯 Exclusive fitness challenges and events
+- 📅 Updates on new programs and services
+
+What to expect:
+• Weekly fitness tips and science-backed insights
+• Personal training and nutrition coaching updates
+• Special offers for subscribers only
+• Early access to new blog posts and programs
+
+Stay connected with us:
+📧 Email: coach@RevvonX.Fit.co
+📞 Phone: +91 88308 89788
+📍 Location: Pune, India | Online Worldwide
+
+Your fitness journey starts here! Let's transform your body and mind together.
+
+Best regards,
+Sushil Chaudhari
+Founder & Head Coach
+RevvonX.Fit
+
+---
+If you didn't subscribe to this newsletter, please ignore this email.
+To unsubscribe, reply with "UNSUBSCRIBE" in the subject line.
+"""
+    
+    try:
+        email_sent = send_email(email, subject, body)
+        if email_sent:
+            return {"status": "ok", "message": "Subscription successful! Check your email for confirmation."}
+        else:
+            # Email failed but still record subscription
+            return {"status": "ok", "message": "Subscription successful! (Email delivery temporarily unavailable)"}
+    except Exception as e:
+        print(f"[ERROR] Failed to send subscription email to {email}: {str(e)}")
+        return {"status": "ok", "message": "Subscription successful! (Email delivery failed)"}
+
+# Admin subscriber endpoints
+@app.get("/api/admin/subscribers")
+def admin_subscribers(user=Depends(require_bearer)): 
+    return subscribers_list()
+
+@app.delete("/api/admin/subscribers/{id_}")
+def admin_subscribers_delete(id_: str, user=Depends(require_bearer)):
+    if not subscribers_delete(id_): raise HTTPException(status_code=404, detail="Not found")
+    return {"status":"deleted"}
 
 @app.get("/api/blogs")
 def public_blogs(): return blogs_list()

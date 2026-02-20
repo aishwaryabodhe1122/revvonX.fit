@@ -30,8 +30,8 @@ def issue_otp(identifier: str) -> None:
         email_subject = f"Your Revon.Fit Admin OTP"
         email_body = f"OTP for {identifier}: {otp}\nThis code expires in {OTP_EXPIRE_MINUTES} minutes."
         
-        print(f"[DEBUG] Sending email to {ADMIN_EMAIL}...")
-        send_email(ADMIN_EMAIL, email_subject, email_body)
+        print(f"[DEBUG] Sending email to {identifier}...")
+        send_email(identifier, email_subject, email_body)
         print("[DEBUG] Email sent successfully!")
         
     except Exception as e:
