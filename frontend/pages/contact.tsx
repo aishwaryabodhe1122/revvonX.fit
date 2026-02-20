@@ -24,7 +24,7 @@ export default function ContactPage() {
       {/* <h2 className="fw-bold mb-3">Contact Information</h2> */}
       <div className="p-4 mx-5"><ul className="list-unstyled mb-0">
         <li className="mb-3 d-flex align-items-start"><AiOutlineUser style={{color: '#d4af37', marginRight: '12px', marginTop: '2px', fontSize: '20px', flexShrink: 0}} /><span><strong>Name:</strong> Mr. Sushil Chaudhari (Trainer & Nutritionist)</span></li>
-        <li className="mb-3 d-flex align-items-start"><AiOutlineMail style={{color: '#d4af37', marginRight: '12px', marginTop: '2px', fontSize: '20px', flexShrink: 0}} /><span><strong>Email:</strong> coach@Revon.Fit.co</span></li>
+        <li className="mb-3 d-flex align-items-start"><AiOutlineMail style={{color: '#d4af37', marginRight: '12px', marginTop: '2px', fontSize: '20px', flexShrink: 0}} /><span><strong>Email:</strong> coach@Revvon.Fit.co</span></li>
         <li className="mb-3 d-flex align-items-start"><AiOutlinePhone style={{color: '#d4af37', marginRight: '12px', marginTop: '2px', fontSize: '20px', flexShrink: 0}} /><span><strong>Phone:</strong> +91 88308 89788</span></li>
         <li className="mb-3 d-flex align-items-start"><AiOutlineWhatsApp style={{color: '#d4af37', marginRight: '12px', marginTop: '2px', fontSize: '20px', flexShrink: 0}} /><span><strong>WhatsApp:</strong> +91 88308 89788</span></li>
         <li className="mb-3 d-flex align-items-start"><AiOutlineGlobal style={{color: '#d4af37', marginRight: '12px', marginTop: '2px', fontSize: '20px', flexShrink: 0}} /><span><strong>Location:</strong> Pune • Online worldwide</span></li>

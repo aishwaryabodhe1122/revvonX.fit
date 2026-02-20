@@ -249,7 +249,7 @@ export default function ReviewsPage() {
                     <textarea 
                       className="form-control" 
                       rows={5} 
-                      placeholder="Share your experience with Revon.Fit..."
+                      placeholder="Share your experience with Revvon.Fit..."
                       value={formData.reviewText}
                       onChange={(e) => setFormData({...formData, reviewText: e.target.value})}
                       required
@@ -302,7 +302,7 @@ export default function ReviewsPage() {
 
             {/* Reviews Display Section */}
             <div className="col-lg-6">
-              <div className="card-luxe p-4" style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
+              <div className="p-4" style={{height: '100%', display: 'flex', flexDirection: 'column'}}>
                 <h3 className="fw-bold mb-4">Recent Reviews</h3>
                 {reviews.length === 0 ? (
                   <p className="text-secondary text-center py-4">No reviews yet. Be the first to share your experience!</p>

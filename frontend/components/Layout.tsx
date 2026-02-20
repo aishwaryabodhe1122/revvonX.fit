@@ -27,10 +27,10 @@ export default function Layout({ children, title }: { children: React.ReactNode,
           display: inline-block;
         }
       `}</style>
-    <Head><title>{title ? `${title} | Revon.Fit` : 'Revon.Fit — Premium Fitness & Nutrition'}</title></Head>
+    <Head><title>{title ? `${title} | Revvon.Fit` : 'Revvon.Fit — Premium Fitness & Nutrition'}</title></Head>
     <nav className="navbar navbar-expand-lg sticky-top"><div className="container">
       <Link className="navbar-brand d-flex align-items-center gap-2" href="/">
-        <img src="/assets/logo.svg" alt="logo" width={32} height={32} /><span className="fw-bold">Revon.Fit</span>
+        <img src="/assets/logo.svg" alt="logo" width={32} height={32} /><span className="fw-bold">Revvon.Fit</span>
       </Link>
       <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav"><span className="navbar-toggler-icon"></span></button>
       <div className="collapse navbar-collapse" id="nav">
@@ -53,10 +53,10 @@ export default function Layout({ children, title }: { children: React.ReactNode,
           <div className="col-lg-4">
             <div className="d-flex align-items-center gap-2 mb-3">
               <img src="/assets/logo.svg" alt="logo" width={32} height={32} />
-              <span className="fw-bold fs-5">Revon.Fit</span>
+              <span className="fw-bold fs-5">Revvon.Fit</span>
             </div>
             <p className="text-secondary mb-3">Transform your body and mind with personalized fitness training and nutrition coaching.</p>
-            <div className="text-secondary">© {new Date().getFullYear()} Revon.Fit. All rights reserved.</div>
+            <div className="text-secondary">© {new Date().getFullYear()} Revvon.Fit. All rights reserved.</div>
           </div>
 
           {/* Quick Links */}
@@ -86,7 +86,7 @@ export default function Layout({ children, title }: { children: React.ReactNode,
           <div className="col-lg-3 col-md-4">
             <h6 className="fw-bold mb-3" style={{color: 'var(--accent)'}}>Get In Touch</h6>
             <ul className="list-unstyled">
-              <li className="mb-2 text-secondary">📧 coach@Revon.Fit.co</li>
+              <li className="mb-2 text-secondary">📧 coach@Revvon.Fit.co</li>
               <li className="mb-2 text-secondary">📞 +91 88308 89788</li>
               <li className="mb-2 text-secondary">📍 Pune, India</li>
               <li className="mb-2 text-secondary">🌐 Online Worldwide</li>

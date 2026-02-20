@@ -57,7 +57,7 @@ export default function AdminReviewsPage() {
   };
 
   return (
-    <AdminLayout title="Manage Reviews">
+    <AdminLayout>
       <div>
             <div className="d-flex justify-content-between align-items-center mb-4">
               <h1 className="fw-bold">Manage <span style={{color: 'var(--accent)'}}>Reviews</span></h1>
