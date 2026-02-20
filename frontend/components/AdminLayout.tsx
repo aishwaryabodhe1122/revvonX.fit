@@ -5,7 +5,7 @@ import { logout } from './auth';
 export default function AdminLayout({ children, title }: { children: React.ReactNode, title?: string }) {
   return (<div>
     <nav className="navbar navbar-expand-lg sticky-top"><div className="container">
-      <Link className="navbar-brand" href="/admin">Admin • Revvon.Fit</Link>
+      <Link className="navbar-brand" href="/admin">Admin • RevvonX.Fit</Link>
       <div className="collapse navbar-collapse show">
         <ul className="navbar-nav ms-auto gap-3">
           <li className="nav-item"><Link className="nav-link" href="/admin/contacts">Contacts</Link></li>

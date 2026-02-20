@@ -249,7 +249,7 @@ export default function ReviewsPage() {
                     <textarea 
                       className="form-control" 
                       rows={5} 
-                      placeholder="Share your experience with Revvon.Fit..."
+                      placeholder="Share your experience with RevvoX.Fit..."
                       value={formData.reviewText}
                       onChange={(e) => setFormData({...formData, reviewText: e.target.value})}
                       required

@@ -75,7 +75,7 @@ export default function Home() {
           <div className="container">
             <div className="d-flex flex-column align-items-center justify-content-center text-center" style={{ minHeight: '400px', padding: '40px 0' }}>
               <span className="badge-gold mb-3">Premium Coaching</span>
-              <h1 className="display-3 fw-bold mb-3">Transform Your Body & Mind with <span style={{ color: 'var(--accent)' }}>Revvon.Fit</span></h1>
+              <h1 className="display-3 fw-bold mb-3">Transform Your Body & Mind with <span style={{ color: 'var(--accent)' }}>RevvonX.Fit</span></h1>
               <p className="lead mb-4" style={{ maxWidth: '700px', color: '#fff' }}>Personal training and nutrition coaching tailored to your goals — online or in-person. Science-based plans, elite accountability.</p>
               <div className="d-flex gap-3"><Link href="/services" className="btn btn-gold btn-lg">Explore Services</Link><a href="#about" className="btn btn-outline-light btn-lg">About Me</a></div>
             </div>
