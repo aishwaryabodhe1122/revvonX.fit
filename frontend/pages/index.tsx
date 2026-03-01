@@ -92,17 +92,17 @@ export default function Home() {
             </div>
             <div className="col-md-7">
               <h2 className="fw-bold mb-3">Hi, I'm <span style={{ color: 'var(--accent)' }}>Sushil</span></h2>
-              <p className="text-secondary">I am your trainer & nutritionist with 8+ years of industry experience helping 600+ clients achieve sustainable transformations.</p>
+              <p className="text-secondary">I am your coach & nutritionist with 3+ years of industry experience helping 100+ clients achieve sustainable transformations.</p>
               <div className="row g-3">
                 <div className="col-6">
                   <div className="p-3 card-luxe h-100">
-                    <div className="h4 mb-0">600+</div>
+                    <div className="h4 mb-0">100+</div>
                     <small className="text-secondary">Clients Transformed</small>
                   </div>
                 </div>
                 <div className="col-6">
                   <div className="p-3 card-luxe h-100">
-                    <div className="h4 mb-0">8 Years</div>
+                    <div className="h4 mb-0">3 Years</div>
                     <small className="text-secondary">Experience</small>
                   </div>
                 </div>
